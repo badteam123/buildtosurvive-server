@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://c14d1861-e2b9-45e3-b77c-3dd2967c5afe-00-23pxdhy7bdt3j.picard.repl.co/",
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
@@ -49,7 +49,7 @@ setInterval(()=>{
     }
   io.to(players[i].pid).emit('playerData',emittingPlayers);
   }
-},50);
+},100);
 
 server.listen(3000, () => {
   console.log('listening on *:3000');
