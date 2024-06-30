@@ -13,6 +13,7 @@ var players = [];
 
 let serverData = {
   tickDelay: 150,
+  seed: 1
 };
 
 io.on("connection", (socket) => {
@@ -58,3 +59,18 @@ setInterval(() => {
 server.listen(3000, () => {
   console.log("listening on *:3000");
 });
+
+
+io.on("command",handleCommand);
+
+function handleCommand(cmd,arg){
+  console.log(cmd);
+  switch(cmd){
+    case "tickDelay":
+      serverData.tickDelay = arg;
+      break;
+    case "seed":
+      serverData.seed = arg;
+      break;
+  }
+}
