@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("myPlayerData", (data) => {
-    players[data.pid] = data;
+    players[socket.id] = data;
   });
 });
 
