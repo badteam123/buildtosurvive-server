@@ -43,7 +43,7 @@ setInterval(() => {
   for (let i = 0; i < players.length; i++) {
     var emittingPlayers = [];
     for (let j = 0; j < players.length; j++) {
-      if (players[i].pid != players[j].pid && players[i].x != undefined) {
+      if (players[i].pid != players[j].pid && players[i].pos != undefined) {
         emittingPlayers.push(players[j]);
       }
     }
