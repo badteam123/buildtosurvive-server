@@ -11,9 +11,13 @@ const io = require("socket.io")(server, {
 
 var players = [];
 
+let serverData = {
+  tickDelay: 100,
+};
+
 io.on("connection", (socket) => {
   console.log("➕ " + socket.id);
-  socket.emit("connected");
+  socket.emit("connected", serverData);
   players.push({ pid: socket.id });
   socket.on("disconnect", () => {
     console.log("➖ " + socket.id);
@@ -49,7 +53,7 @@ setInterval(() => {
     }
     io.to(players[i].pid).emit("playerData", emittingPlayers);
   }
-}, 100);
+}, serverData.tickDelay);
 
 server.listen(3000, () => {
   console.log("listening on *:3000");
