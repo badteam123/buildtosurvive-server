@@ -49,7 +49,7 @@ setInterval(() => {
     }
     io.to(players[i].pid).emit("playerData", emittingPlayers);
   }
-}, 100);
+}, 200);
 
 server.listen(3000, () => {
   console.log("listening on *:3000");
