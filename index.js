@@ -34,10 +34,10 @@ io.on("connection", (socket) => {
 
 setInterval(() => {
   for (let i in players) {
-    var emittingPlayers = [];
+    var emittingPlayers = {};
     for (let j in players) {
       if (i != j) {
-        emittingPlayers.push(players[j]);
+        emittingPlayers[j] = players[j];
       }
     }
     io.to(i).emit("playerData", emittingPlayers);
