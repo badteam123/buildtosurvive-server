@@ -12,7 +12,7 @@ const io = require("socket.io")(server, {
 var players = [];
 
 let serverData = {
-  tickDelay: 100,
+  tickDelay: 300,
 };
 
 io.on("connection", (socket) => {
