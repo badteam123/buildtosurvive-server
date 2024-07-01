@@ -30,6 +30,10 @@ io.on("connection", (socket) => {
   socket.on("myPlayerData", (data) => {
     players[socket.id] = data;
   });
+
+  socket.on("host", () => {
+    socket.emit("hostData", socket.id);
+  });
 });
 
 setInterval(() => {
