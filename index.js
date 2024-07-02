@@ -33,21 +33,27 @@ io.on("connection", (socket) => {
 
   socket.on("host", () => {
     console.log("New host: " + socket.id);
+    players[socket.id].room = socket.id;
     players[socket.id].hosting = true;
     socket.emit("hostData", socket.id);
+  });
+
+  socket.on("join", (roomId) => {
+    console.log(socket.id+" joined a host");
+    players[socket.id].room = roomId;
+    socket.emit("joinData", socket.id);
   });
 });
 
 setInterval(() => {
-  for (let i in players) {
-    var emittingPlayers = {};
+  for (let p in players) {
+    emittingPlayers = {};
     for (let j in players) {
-      if (i != j) {
+      if(players[p].room === players[j].room && players[p] != players[j]){
         emittingPlayers[j] = players[j];
-        delete emittingPlayers[j].hosting;
       }
     }
-    io.to(i).emit("playerData", emittingPlayers);
+    io.to(p).emit('playerData', emittingPlayers);
   }
 }, serverData.tickDelay);
 
