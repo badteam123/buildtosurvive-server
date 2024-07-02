@@ -32,6 +32,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("host", () => {
+    console.log("New host: " + socket.id);
     players[socket.id].hosting = true;
     socket.emit("hostData", socket.id);
   });
@@ -51,5 +52,5 @@ setInterval(() => {
 }, serverData.tickDelay);
 
 server.listen(3000, () => {
-  console.log("listening on *:3000");
+  console.log("✅ Server Online\nlistening on *:3000");
 });
