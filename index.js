@@ -51,8 +51,8 @@ setInterval(() => {
     for (let j in players) {
       if(players[p].room === players[j].room && players[p] != players[j]){
         emittingPlayers[j] = players[j];
-        delete emittingPlayers[i].hosting;
-        delete emittingPlayers[i].room;
+        delete emittingPlayers[j].hosting;
+        delete emittingPlayers[j].room;
       }
     }
     io.to(p).emit('playerData', emittingPlayers);
