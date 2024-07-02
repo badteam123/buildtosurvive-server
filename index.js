@@ -28,10 +28,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("myPlayerData", (data) => {
-    players[socket.id] = data;
+    players[socket.id] = Object.assign(players[socket.id],data);
   });
 
   socket.on("host", () => {
+    players[socket.id].hosting = true;
     socket.emit("hostData", socket.id);
   });
 });
@@ -42,6 +43,7 @@ setInterval(() => {
     for (let j in players) {
       if (i != j) {
         emittingPlayers[j] = players[j];
+        delete emittingPlayers[j].hosting;
       }
     }
     io.to(i).emit("playerData", emittingPlayers);
