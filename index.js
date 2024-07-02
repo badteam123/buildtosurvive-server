@@ -34,7 +34,6 @@ io.on("connection", (socket) => {
   socket.on("host", () => {
     console.log("New host: " + socket.id);
     players[socket.id].room = socket.id;
-    players[socket.id].hosting = true;
     socket.emit("hostData", socket.id);
   });
 
@@ -51,7 +50,6 @@ setInterval(() => {
     for (let j in players) {
       if(players[p].room === players[j].room && players[p] != players[j]){
         emittingPlayers[j] = players[j];
-        delete emittingPlayers[j].hosting;
         delete emittingPlayers[j].room;
       }
     }
