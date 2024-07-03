@@ -11,14 +11,14 @@ const io = require("socket.io")(server, {
 
 var players = [];
 
-let serverData = {
+let masterServerData = {
   tickDelay: 150,
   seed: 1,
 };
 
 io.on("connection", (socket) => {
   console.log("➕ " + socket.id);
-  socket.emit("connected", serverData);
+  socket.emit("connected", masterServerData);
   players[socket.id] = {};
 
   socket.on("disconnect", () => {
@@ -34,14 +34,22 @@ io.on("connection", (socket) => {
   socket.on("host", () => {
     console.log("New host: " + socket.id);
     players[socket.id].room = socket.id;
-    socket.emit("hostData", socket.id);
+    players[socket.id].host = true;
+    socket.emit("joinData", socket.id);
   });
 
   socket.on("join", (roomId) => {
-    console.log(socket.id+" joined a host");
+    console.log(socket.id+" is trying to join "+roomId);
     players[socket.id].room = roomId;
-    socket.emit("joinData", socket.id);
+    io.to(roomId).emit("reqServerData",socket.id);
   });
+
+  socket.on("sendServerData", (requester,serverData) => {
+    console.log(serverData);
+    io.to(requester).emit("joinData", serverData);
+  });
+
+  
 });
 
 setInterval(() => {
@@ -50,12 +58,13 @@ setInterval(() => {
     for (let j in players) {
       if(players[p].room === players[j].room && players[p] != players[j]){
         emittingPlayers[j] = players[j];
+        delete emittingPlayers[j].host;
         delete emittingPlayers[j].room;
       }
     }
     io.to(p).emit('playerData', emittingPlayers);
   }
-}, serverData.tickDelay);
+}, masterServerData.tickDelay);
 
 server.listen(3000, () => {
   console.log("✅ Server Online\nlistening on *:3000");
