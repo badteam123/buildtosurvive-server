@@ -30,6 +30,7 @@ io.on("connection", (socket) => {
   socket.on("myPlayerData", (data) => {
     players[socket.id] = Object.assign(players[socket.id],data);
   });
+  /*
 
   socket.on("host", () => {
     console.log("New host: " + socket.id);
@@ -42,15 +43,16 @@ io.on("connection", (socket) => {
     players[socket.id].room = roomId;
     socket.emit("joinData", socket.id);
   });
+
+  */
 });
 
 setInterval(() => {
   for (let p in players) {
     emittingPlayers = {};
     for (let j in players) {
-      if(players[p].room === players[j].room && players[p] != players[j]){
+      if(players[p] != players[j]){
         emittingPlayers[j] = players[j];
-        delete emittingPlayers[j].room;
       }
     }
     io.to(p).emit('playerData', emittingPlayers);
